@@ -13,10 +13,8 @@ $pdo = new PDO($_ENV['PDO_CONNECTION_STRING']);
 //'pgsql:host=ec2-54-208-233-243.compute-1.amazonaws.com;port=5432;dbname=dbce880i0cp286;user=pyhksezydzhbqn;password=f8f59e8898bc6b819052e79186e2fcf3bdd66301a45ba95dca0c0db0b5c47b4f'
 
 $sql = "
-SELECT invoices.id, invoice_date, total, first_name, last_name
-FROM invoices
-INNER JOIN customers
-ON invoices.customer_id = customers.id
+SELECT *
+FROM playlists
 ";
 // INNER JOIN customers
 //ON invoices.customer_id = customer.id
@@ -24,40 +22,29 @@ $statement = $pdo->prepare($sql); //creating a prepared statement for execution
 $statement->execute();
 
 //variable
-$invoices = $statement->fetchAll(PDO::FETCH_OBJ);
+$playlists = $statement->fetchAll(PDO::FETCH_OBJ);
 
-// var_dump($invoices);
-// die();
+//get tracks?
 
-//SELECT invoices.id, invoice_date, total
-// FROM invoices
-// INNER JOIN customers
-// ON invoices.customer_id = customer.id
+
 ?>
 
 <table>
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Date</th>
-      <th>Total</th>
-      <th>Customer</th>
+      <th>Playlist Name</th>
     </tr>
   </thead>
   <tbody>
-  <?php foreach ($invoices as $invoice) : ?>
+  <?php foreach ($playlists as $playlist) : ?>
     <tr>
       <td>
-        <?php echo $invoice->id ?>
+        <?php echo $playlist->id ?>
       </td>
       <td>
-        <?php echo $invoice->invoice_date ?>
-      </td>
-      <td>
-        <?php echo $invoice->total ?>
-      </td>
-      <td>
-        <?php echo "{$invoice->first_name} {$invoice->last_name}" ?>
+        <a href='tracks.php?id=<?php echo $playlist->id ?>''>
+          <?php echo $playlist->name ?>
+        </a>
       </td>
     </tr>
     <?php endforeach ?>
