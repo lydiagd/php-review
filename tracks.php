@@ -20,9 +20,9 @@ if(is_null($playlist_id))
 }
 
 $sql = "
-SELECT tracks.name AS trackName, albums.title, tracks.composer,  tracks.unit_price, genres.name AS genreName
+SELECT tracks.name AS trackName, albums.title, artists.name AS artistName,  tracks.unit_price, genres.name AS genreName
 FROM tracks INNER JOIN playlist_track ON playlist_track.track_id = tracks.id INNER JOIN playlists ON playlists.id = playlist_track.playlist_id 
-INNER JOIN genres ON genres.id = tracks.genre_id INNER JOIN albums ON albums.id = tracks.album_id
+INNER JOIN genres ON genres.id = tracks.genre_id INNER JOIN albums ON albums.id = tracks.album_id INNER JOIN artists ON artists.id = albums.artist_id
 WHERE playlist_id = $playlist_id
 ";
 /*
@@ -57,7 +57,7 @@ $tracks = $statement->fetchAll(PDO::FETCH_OBJ);
     $playlistName = $statement->fetch(PDO::FETCH_ASSOC);
     
     foreach ($playlistName as $plName) :
-    echo "No results for $plName"; //print out name of playlist
+    echo "No tracks found for $plName"; //print out name of playlist
     endforeach;
     ?>
     </tr>
